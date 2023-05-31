@@ -649,7 +649,6 @@ target_sources(app-lib PRIVATE
   doc_api.cpp
   doc_diff.cpp
   doc_exporter.cpp
-  doc_range.cpp
   doc_range_ops.cpp
   doc_undo.cpp
   docs.cpp
@@ -722,7 +721,6 @@ target_sources(app-lib PRIVATE
   util/pal_ops.cpp
   util/pic_file.cpp
   util/pixel_ratio.cpp
-  util/range_utils.cpp
   util/readable_time.cpp
   util/render_text.cpp
   util/resize_image.cpp
@@ -742,6 +740,7 @@ target_link_libraries(app-lib
   cfg-lib
   clip
   doc-lib
+  view-lib
   dio-lib
   filters-lib
   fixmath-lib
