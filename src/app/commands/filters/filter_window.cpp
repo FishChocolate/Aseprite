@@ -12,7 +12,6 @@
 #include "app/commands/filters/filter_window.h"
 
 #include "app/commands/filters/filter_manager_impl.h"
-#include "app/commands/filters/filter_worker.h"
 #include "app/i18n/strings.h"
 #include "app/ini_file.h"
 #include "app/modules/gui.h"
@@ -140,7 +139,7 @@ bool FilterWindow::doModal()
     stopPreview();
 
     // Apply the filter in background
-    start_filter_worker(m_filterMgr);
+    m_filterMgr->startWorker();
     result = true;
   }
 
