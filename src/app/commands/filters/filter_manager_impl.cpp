@@ -265,6 +265,7 @@ void FilterManagerImpl::apply()
 
   ASSERT(m_reader.context());
   m_reader.context()->setCommandResult(result);
+  init(m_site.cel());
 }
 
 void FilterManagerImpl::applyToTarget()
@@ -366,6 +367,7 @@ void FilterManagerImpl::commitTransaction()
   ASSERT(m_tx);
   m_tx->commit();
   m_writer.reset();
+  m_tx.reset();
 }
 
 void FilterManagerImpl::flush()

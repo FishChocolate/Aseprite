@@ -37,6 +37,7 @@ FilterWindow::FilterWindow(const char* title, const char* cfgSection,
   , m_hbox(HORIZONTAL)
   , m_vbox(VERTICAL)
   , m_container(VERTICAL)
+  , m_applyButton(Strings::filters_apply())
   , m_okButton(Strings::filters_ok())
   , m_cancelButton(Strings::filters_cancel())
   , m_preview(filterMgr)
@@ -48,6 +49,7 @@ FilterWindow::FilterWindow(const char* title, const char* cfgSection,
   , m_editor(nullptr)
   , m_oldTool(nullptr)
 {
+  m_applyButton.processMnemonicFromText();
   m_okButton.processMnemonicFromText();
   m_cancelButton.processMnemonicFromText();
   m_showPreview.processMnemonicFromText();
@@ -60,6 +62,7 @@ FilterWindow::FilterWindow(const char* title, const char* cfgSection,
   m_targetButton.setTarget(filterMgr->getTarget());
   m_targetButton.setCelsTarget(celsTarget);
   m_targetButton.TargetChange.connect(&FilterWindow::onTargetButtonChange, this);
+  m_applyButton.Click.connect(&FilterWindow::onApply, this);
   m_okButton.Click.connect(&FilterWindow::onOk, this);
   m_cancelButton.Click.connect(&FilterWindow::onCancel, this);
   m_showPreview.Click.connect(&FilterWindow::onShowPreview, this);
@@ -69,6 +72,7 @@ FilterWindow::FilterWindow(const char* title, const char* cfgSection,
   m_hbox.addChild(&m_container);
   m_hbox.addChild(&m_vbox);
 
+  m_vbox.addChild(&m_applyButton);
   m_vbox.addChild(&m_okButton);
   m_vbox.addChild(&m_cancelButton);
   m_vbox.addChild(&m_targetButton);
@@ -136,10 +140,7 @@ bool FilterWindow::doModal()
 
   // Did the user press OK?
   if (closer() == &m_okButton) {
-    stopPreview();
-
-    // Apply the filter in background
-    m_filterMgr->startWorker();
+    apply();
     result = true;
   }
 
@@ -178,6 +179,21 @@ void FilterWindow::setNewTarget(Target target)
 
   m_filterMgr->setTarget(target);
   m_targetButton.setTarget(target);
+}
+
+void FilterWindow::apply()
+{
+    stopPreview();
+
+    // Apply the filter in background
+    m_filterMgr->startWorker();
+}
+
+void FilterWindow::onApply()
+{
+  apply();
+
+  restartPreview();
 }
 
 void FilterWindow::onOk()
